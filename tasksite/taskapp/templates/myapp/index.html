@@ -1,0 +1,51 @@
+{% extends 'myapp/base.html' %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Add Task</h4>
+        <form class="p-3 shadow" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" class="form-control" name="name" id="name" placeholder="Enter Task Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="description" id="description" placeholder="Enter Task Description">
+            </div>
+            <div class="form-group">
+                Due:
+                <input type="date" class="form-control" name="date" id="date" required> 
+            </div>
+            <div class="form-group">
+                Priority:
+                <select class="form-control" id="priority" name="priority" required>
+                    <option disabled selected value> -- select an option -- </option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+            </div>
+            <input class="btn btn-primary" type="submit">
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h4>Tasks to be completed</h4>
+        {% for task in task_list %}
+        <div class="shadow card">
+            <div class="card-body">
+                <h4 class="card-title">{{task.name}}</h4>
+                <P><b>Priority: {{task.priority}}</b></P>
+                <P><b>Due: {{task.date}}</b></P>
+                
+                <a class="btn btn-success" href="{% url 'delete' task.id%}">Done</a>
+                <a class="btn btn-warning" href="{% url 'update' task.id%}">Update</a>
+                <a class="btn btn-info" href="{% url 'detail' task.id%}">Detail</a>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
